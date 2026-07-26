@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IoT Digital Twin Dashboard</title>
+    <!-- 1. Load the MQTT library for the browser -->
+    <script src="https://unpkg.com"></script>
+
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .twin-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; width: 300px; }
+        .gauge { font-size: 48px; font-weight: bold; color: #007bff; margin: 20px 0; transition: color 0.5s ease; }
+        .status { font-size: 14px; color: #28a745; text-transform: uppercase; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="twin-card">
+        <h2>Digital Twin Status</h2>
+        <div id="status-indicator" class="status">Connecting to broker...</div>
+        <div id="temp-gauge" class="gauge">-- °C</div>
+        <p>Live data from simulated device</p>
+    </div>
+
+    <script>
+        // 2. MUST match the exact same unique topic you used in Python!
+        const TOPIC = "digitaltwin/ssp/sensor1"; 
+        
+        // 3. Connect via WebSockets using the public broker's WebSocket port (8000)
+        // Try port 8080 or port 8081 with wss if using a secure live server
+        const client = mqtt.connect('wss://test.mosquitto.org:8081/mqtt');
+
+
+
+
+
+        client.on('connect', () => {
+            document.getElementById('status-indicator').innerText = "Connected & Syncing";
+            client.subscribe(TOPIC);
+        });
+
+        // 4. Handle incoming messages and update the UI instantly
+        client.on('message', (topic, message) => {
+            const data = JSON.parse(message.toString());
+            
+            // Update the temperature text
+            const tempGauge = document.getElementById('temp-gauge');
+            tempGauge.innerText = data.temperature + " °C";
+
+            // Visual feedback: turn red if it gets too hot
+            if (data.temperature > 30) {
+                tempGauge.style.color = "#dc3545"; // Red
+            } else {
+                tempGauge.style.color = "#007bff"; // Blue
+            }
+        });
+    </script>
+</body>
+</html>
