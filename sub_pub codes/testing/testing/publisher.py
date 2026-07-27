@@ -16,8 +16,8 @@ client.connect(broker_address) #connect to broker
 
 
 while True :
-    client.publish("house/bulbs/bulb1","OFF")
-    print("Publishing message to topic","house/bulbs/bulb1")
+    client.publish("ssp/sensors","OFF")
+    print("Publishing message to topic","ssp/sensors")
     time.sleep(1) # wait
 
 client.loop_stop() #stop the loop
