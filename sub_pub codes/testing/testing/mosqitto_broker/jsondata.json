@@ -1,0 +1,8 @@
+{
+    "temperature": 24.8,
+    "humidity": 58,
+    "smoke": false,
+    "motion": true,
+    "light": 720,
+    "timestamp": "2026-07-28T11:35:20"
+}
