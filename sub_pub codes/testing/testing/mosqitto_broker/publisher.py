@@ -16,7 +16,7 @@ client.connect(broker_address) #connect to broker
 #client.publish("ssp/sensors", json_data)
 
 while True:
-    # اقرأ السنسور
+    #read sensors
     #temperature = sensor.read_temperature()
     #humidity = sensor.read_humidity()
 
